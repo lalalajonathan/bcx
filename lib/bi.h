@@ -34,9 +34,11 @@
 
 
 
-// FORCE_BASE values are for checking robustness of the algorithm.
-// All cases have been tested. OK.
+// FORCE_BASE values are for checking robustness.
+// All cases have been tested OK.
 // Best let compilers decide.
+
+// must be sizeof(len_t) >= sizeof(ddig_t), sizeof(ddig_t) >= 2*sizeof(dig_t)
 
 //#define		FORCE_BASE	10
 //#define		FORCE_BASE	100
@@ -46,80 +48,105 @@
 //#define		FORCE_BASE	1000000
 //#define		FORCE_BASE	10000000
 //#define		FORCE_BASE	100000000
+//#define		FORCE_BASE	1000000000
+//#define		FORCE_BASE	1000000000000000
 
 #if FORCE_BASE == 10			// Force base 10
 		typedef		char		dig_t;
+		typedef		int32_t		ddig_t;
+		typedef		int32_t		len_t;
 		#define		RADIX		10
 		#define		LOG10_RADIX	1
 		#define		ARI_INV_3	7	// For div 3N by 3
 #elif FORCE_BASE == 100			// Force base 10^2
 		typedef		char		dig_t;
+		typedef		int32_t		ddig_t;
+		typedef		int32_t		len_t;
 		#define		RADIX		100
 		#define		LOG10_RADIX	2
 		#define		ARI_INV_3	67	// For div 3N by 3
 #elif FORCE_BASE == 1000		// Force base 10^3
 		typedef		int16_t		dig_t;
+		typedef		int32_t		ddig_t;
+		typedef		int32_t		len_t;
 		#define		RADIX		1000
 		#define		LOG10_RADIX	3
 		#define		ARI_INV_3	667	// For div 3N by 3
 #elif FORCE_BASE == 10000		// Force base 10^4
 		typedef		int16_t		dig_t;
+		typedef		int32_t		ddig_t;
+		typedef		int32_t		len_t;
 		#define		RADIX		10000
 		#define		LOG10_RADIX	4
 		#define		ARI_INV_3	6667	// For div 3N by 3
 #elif FORCE_BASE == 100000		// Force base 10^5
 		typedef		int32_t		dig_t;
+		typedef		int64_t		ddig_t;
+		typedef		int64_t		len_t;
 		#define		RADIX		100000
 		#define		LOG10_RADIX	5
 		#define		ARI_INV_3	66667	// For div 3N by 3
 #elif FORCE_BASE == 1000000		// Force base 10^6
 		typedef		int32_t		dig_t;
+		typedef		int64_t		ddig_t;
+		typedef		int64_t		len_t;
 		#define		RADIX		1000000
 		#define		LOG10_RADIX	6
 		#define		ARI_INV_3	666667	// For div 3N by 3
 #elif FORCE_BASE == 10000000	// Force base 10^7
 		typedef		int32_t		dig_t;
+		typedef		int64_t		ddig_t;
+		typedef		int64_t		len_t;
 		#define		RADIX		10000000
 		#define		LOG10_RADIX	7
 		#define		ARI_INV_3	6666667	// For div 3N by 3
 #elif FORCE_BASE == 100000000	// Force base 10^8
 		typedef		int32_t		dig_t;
+		typedef		int64_t		ddig_t;
+		typedef		int64_t		len_t;
 		#define		RADIX		100000000
 		#define		LOG10_RADIX	8
 		#define		ARI_INV_3	66666667	// For div 3N by 3
+#elif FORCE_BASE == 1000000000	// Force base 10^9
+		typedef		int64_t		dig_t;
+		typedef		__int128	ddig_t;
+		typedef		__int128	len_t;
+		#define		RADIX		1000000000
+		#define		LOG10_RADIX	9
+		#define		ARI_INV_3	666666667	// For div 3N by 3
+#elif FORCE_BASE == 1000000000000000	// Force base 10^15
+		typedef		int64_t		dig_t;
+		typedef		__int128	ddig_t;
+		typedef		__int128	len_t;
+		#define		RADIX		1000000000000000
+		#define		LOG10_RADIX	15
+		#define		ARI_INV_3	666666666666667	// For div 3N by 3
 // Guess best.
 #else
-	#if	defined(__LP64__)		// Base 10^8 for 64-bit
+	#if defined(__LP128__)		// Base 10^16 for 128-bit
+		typedef		int64_t		dig_t;
+		typedef		__int128	ddig_t;
+		typedef		__int128	len_t;
+		#define		RADIX		10000000000000000
+		#define		LOG10_RADIX	16
+		#define		ARI_INV_3	6666666666666667	// For div 3N by 3
+	#elif defined(__LP64__)		// Base 10^8 for 64-bit
 		typedef		int32_t		dig_t;
+		typedef		int64_t		ddig_t;
+		typedef		int64_t		len_t;
 		#define		RADIX		100000000
 		#define		LOG10_RADIX	8
 		#define		ARI_INV_3	66666667	// For div 3N by 3
 	#else						// Base 10^4 for 32-bit
 		typedef		int16_t		dig_t;
+		typedef		int32_t		ddig_t;
+		typedef		int32_t		len_t;
 		#define		RADIX		10000
 		#define		LOG10_RADIX	4
 		#define		ARI_INV_3	6667	// For div 3N by 3
 	#endif
 #endif
 
-#if	defined(__LP64__) || FORCE_BASE > 10000 	// For 64-bit
-	typedef		int64_t		len_t;
-	typedef		int64_t		ddig_t;
-#else
-	typedef		int32_t		len_t;
-	typedef		int32_t		ddig_t;
-#endif
-
-#if	0	// For 128-bit machine in the future.
-	typedef		int128_t		len_t;
-	typedef		int64_t			dig_t;
-	typedef		int128_t		ddig_t;
-	#define		RADIX			10000000000000000
-	#define		LOG10_RADIX		16
-	#define		ARI_INV_3		6666666666666667
-#endif
-
-// must be sizeof(len_t) >= sizeof(ddig_t), sizeof(ddig_t) >= 2*sizeof(dig_t)
 
 #ifdef	__cplusplus
 extern "C"
@@ -171,6 +198,7 @@ void	bi_sub_shift(
 void	bi_mul1_one_digit(
 	dig_t* a, len_t* alen,
 	dig_t b);
+
 void	bi_mul2_one_digit(
 	const dig_t* a, len_t alen,
 	dig_t b,

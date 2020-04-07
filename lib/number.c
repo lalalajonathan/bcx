@@ -1407,10 +1407,16 @@ bc_num2long (bc_num num, len_t* ret)
 	// 2^63-1 = 9223372036854775807
 	// limit :   999999999999999999 --> length == 18
 
+	// sizeof(len_t) == 16
+	// 2^127-1 = 170141183460469231731687303715884105727
+	// limit :    99999999999999999999999999999999999999 --> length == 38
+
 	// Avoiding overflow
 	if(
-		(4 == sizeof(len_t) && b10_len > 9) ||
-		(8 == sizeof(len_t) && b10_len > 18))
+		( 4 == sizeof(len_t) && b10_len >  9) ||
+		( 8 == sizeof(len_t) && b10_len > 18) ||
+		(16 == sizeof(len_t) && b10_len > 38) ||
+		0)
 	{
 		*ret = 0;
 		return 0;

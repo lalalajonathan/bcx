@@ -1,0 +1,16 @@
+.DS_Store
+config.h
+config.log
+config.status
+Makefile
+stamp-h1
+bc/bc
+bc/libmath.h
+bc/.deps
+dc/dc
+dc/.deps
+lib/.deps
+doc/texi-ver.incl
+autom4te.cache
+*.o
+*.a

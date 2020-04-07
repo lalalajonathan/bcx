@@ -1412,7 +1412,7 @@ static void*	__mul_thread_proc(void* pParam)
 	while(1)
 	{
 		int		i;
-		mul_info*	mi = NULL;
+		mul_info*	mi = (mul_info*)0;
 
 		event_dec(&__g_event_put);
 
@@ -1808,7 +1808,7 @@ static void		__bi_mul_toomcook3_trigger(
 			{
 				mi->state = 3;
 				mi->free_ab = 0;
-				mi->r = NULL;
+				mi->r = (dig_t*)0;
 				mi->rlen = 0;
 				mi->eval_sign = 1;
 			}
@@ -1853,7 +1853,7 @@ static void		__bi_mul_toomcook3_trigger(
 			{
 				mi->state = 3;
 				mi->free_ab = 0;
-				mi->r = NULL;
+				mi->r = (dig_t*)0;
 				mi->rlen = 0;
 				mi->eval_sign = 1;
 			}
@@ -1900,7 +1900,7 @@ static void		__bi_mul_toomcook3_trigger(
 				bi_free(tym2);
 				mi->state = 3;
 				mi->free_ab = 0;
-				mi->r = NULL;
+				mi->r = (dig_t*)0;
 				mi->rlen = 0;
 				mi->eval_sign = 1;
 			}
@@ -1947,7 +1947,7 @@ static void		__bi_mul_toomcook3_trigger(
 				bi_free(tym1);
 				mi->state = 3;
 				mi->free_ab = 0;
-				mi->r = NULL;
+				mi->r = (dig_t*)0;
 				mi->rlen = 0;
 				mi->eval_sign = 1;
 			}
@@ -1994,7 +1994,7 @@ static void		__bi_mul_toomcook3_trigger(
 				bi_free(typ1);
 				mi->state = 3;
 				mi->free_ab = 0;
-				mi->r = NULL;
+				mi->r = (dig_t*)0;
 				mi->rlen = 0;
 				mi->eval_sign = 1;
 			}
@@ -2505,6 +2505,7 @@ static dig_t	__simple_sqrt(ddig_t a)
 */
 
 // shift >= 0
+// sqrt( a * RADIX^shift )
 void	bi_sqrt(const dig_t* a, len_t alen, len_t shift, dig_t* r, len_t* rlen)
 {
 	dig_t	*x1, *x2, *t;
@@ -2941,7 +2942,7 @@ int		bi_init(int quiet)
 
 		for(i = 0; i < __g_paral_cnt; i++)
 		{
-			pthread_create(&(__g_thr[i]), (pthread_attr_t*)0, __mul_thread_proc, (void*)0);
+			pthread_create(&(__g_thr[i]), (pthread_attr_t*)0, __mul_thread_proc, NULL);
 		}
 	}
 #endif
