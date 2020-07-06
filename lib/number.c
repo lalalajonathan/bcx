@@ -226,7 +226,7 @@ _bc_do_compare (bc_num n1, bc_num n2, int use_sign)//, int ignore_last )
 
 	if (use_sign && n1->n_sign != n2->n_sign)
 	{
-		return dir * COMP(n1->n_sign, n2->n_sign);
+		return COMP(n1->n_sign, n2->n_sign);
 	}
 
 	if (n1->n_len != n2->n_len)
