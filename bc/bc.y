@@ -86,7 +86,7 @@ int cur_func = -1;
 /*     '++', '--' 				*/
 %token <c_value> INCR_DECR
 /*     'define', 'break', 'quit', 'length' 	*/
-%token <i_value> Define    Break    Quit    Length    Powmod, Factorial   Permutation   Combination
+%token <i_value> Define    Break    Quit    Length    Powmod    Factorial   Permutation   Combination
 /*     'return', 'for', 'if', 'while', 'sqrt', 'else' 	*/
 %token <i_value> Return    For    If    While    Sqrt   Else
 /*     'scale', 'ibase', 'obase', 'auto', 'read', 'random' 	*/
